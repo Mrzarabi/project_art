@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\V1\Category\CategoryRequest;
-use App\Http\Resources\Api\V1\Category\Category as CategoryResource;
-use App\Http\Resources\Api\V1\Category\CategoryCollection;
+use App\Http\Resources\V1\Category\Category as CategoryResource;
+use App\Http\Resources\V1\Category\CategoryCollection;
 use App\Models\Category;
 use Carbon\Carbon;
+use Facade\FlareClient\Http\Response;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Input;
 use Symfony\Component\Console\Input\Input;
 
 class CategoryController extends Controller
@@ -21,8 +21,12 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return new CategoryCollection($categories);
+        $categories = Category::where('category_id', null)->get();
+        if (request()->wantsJson()) {
+            return new CategoryCollection($categories);
+        } else {
+            return view('category', compact('categories'));
+        }
     }
 
     /**
@@ -44,16 +48,21 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         $category = new Category;
+            if($request->hasFile('image')) {
 
-            $category->create( array_merge( $request->all(), [
-                'image' => $this->upload_image($request->file('image'))
-            ]  
-            ));
+                $category->create( array_merge( $request->all(), [
+                    'image' => $this->upload_image($request->file('image'))
+                ]  
+                ));
+            } else {
 
-        return $this->responce([
-            'data' => 'دسته بندی با موققیت ثبت شد',
-            'status' => 'success'
-        ]);
+                $category->create( array_merge( $request->all() ));
+            }
+
+            return Response([
+                'data' => 'دسته بندی با موققیت ثبت شد',
+                'status' => 'success'
+            ]);
     }
 
     /**
@@ -64,7 +73,12 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        return new CategoryResource($category);
+        if(request()->wantsJson()) {
+            
+            return new CategoryResource($category);
+        } else {
+            return view('test', compact('category'));
+        }
     }
 
     /**
@@ -87,7 +101,6 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        return $request;
         if($request->hasFile('image')) {
             $image = $this->upload_image($request->file('image'));
         } else {
@@ -98,7 +111,7 @@ class CategoryController extends Controller
             ] 
         ));
 
-        return $this->responce([
+        return Response([
             'data' => 'دسته بندی با موفقیت به روز رسانی شد',
             'status' => 'success' 
         ]);
@@ -114,7 +127,7 @@ class CategoryController extends Controller
     {
         $category->delete();
 
-        return response([
+        return Response([
             'data' => 'دسته بندی با موفقیت حذف شد',
             'status' => 'success'
         ]);
