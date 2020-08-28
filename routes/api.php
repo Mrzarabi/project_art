@@ -19,6 +19,6 @@ Route::prefix('v1')->namespace('Api\V1')->group( function () {
     Route::resource('category', 'CategoryController');
 });
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
