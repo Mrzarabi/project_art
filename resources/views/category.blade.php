@@ -2,7 +2,7 @@
 @section('main')
     <div class="container">
     <div class="ts-title text-center">
-        <h2>My Services</h2>
+        <h2>Category</h2>
     </div>
     <!--end ts-title-->
     <div class="row">
@@ -12,7 +12,7 @@
                     <div class="ts-item-content">
                         <div class="ts-item-header">
                             <figure class="icon">
-                                <img src="assets/img/icon-brushes.png" alt="">
+                                <img src=" {{$category->image}} " alt="image" style="max-height: 200px; max-width: 200px;">
                             </figure>
                             <!--end icon-->
                         </div>
@@ -20,7 +20,7 @@
                         <div class="ts-item-body">
                             <h4> {{$category->title}} </h4>
                             <p class="mb-0">
-                                Duis molestie enim mattis gravida viverra. Fusce ut eros augue. Sed id mauris vel neque
+                                {{ $category->desc }}
                             </p>
                         </div>
                         <!--end ts-item-body-->
