@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class Controller extends BaseController
 {
@@ -14,19 +15,12 @@ class Controller extends BaseController
 
     public static function upload_image($image)
     {
-        // Create file name & file path with /year/month/day/filename formats
-        $time = Carbon::now();   
-        $file_path = "uploads/{$time->year}/{$time->month}/{$time->day}";
-        $file_ext = $image->getClientOriginalExtension();
-        $file_name = rtrim($image->getClientOriginalName(), ".$file_ext");
-        $file_name = time() . '_' . substr($file_name, 0, 30);
-        
-        // Create directories if doesn't exists
-        if (!file_exists( public_path($file_path) )) {
-            mkdir(public_path($file_path), 0777, true);
-        }
-
-        $image->move( public_path("$file_path/$file_name.$file_ext") );
-        return "/$file_path/$file_name.$file_ext";
+        $date = Carbon::now();
+        $imagePath = "/upload/images/{$date->year}/{$date->month}/{$date->day}/";
+        $filename = $image->getClientOriginalName();
+        $filename = Carbon::now()->timestamp . "-{$filename}";
+        $image->move(public_path($imagePath) , $filename);
+        $file = $imagePath . $filename;
+        return $file;
     }
 }
