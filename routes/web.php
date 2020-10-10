@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::namespace('Api\V1')->group( function() {
     Route::resource('category', 'CategoryController');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
