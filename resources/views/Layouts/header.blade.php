@@ -12,7 +12,7 @@
             <!--end navbar-toggler-->
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav d-block d-lg-flex ml-auto text-right">
-                    <a class="nav-item nav-link active ts-scroll" href="#page-top">Home <span class="sr-only">(current)</span></a>
+                    <a class="nav-item nav-link active ts-scroll" href="/">Home <span class="sr-only">(current)</span></a>
                     <a class="nav-item nav-link ts-scroll" href=" {{route('category.index')}} ">Gallery</a>
                     <a class="nav-item nav-link ts-scroll" href="#about-me">About Me</a>
                     {{-- <a class="nav-item nav-link ts-scroll" href="#my-skills">Skills</a> --}}
