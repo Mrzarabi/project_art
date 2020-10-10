@@ -17,18 +17,13 @@ class CategoryCollection extends ResourceCollection
         return [
             'data' => $this->collection->map(function($item) {
                 return [
+                    'id'    => $item->id,
                     'title' => $item->title,
                     'desc' => $item->desc,
                     'image' => $item->image,
+                    'time' => $item->created_at->format('d M Y'),
                 ];
             })
-        ];
-    }
-
-    public function with($request)
-    {
-        return [
-            'status' => 'success'
         ];
     }
 }
