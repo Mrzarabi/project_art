@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Auth::routes();
+
 Route::get('/', function () {
     return view('index');
 });
@@ -21,6 +23,5 @@ Route::namespace('Api\V1')->group( function() {
     Route::resource('category', 'CategoryController');
 });
 
-Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
