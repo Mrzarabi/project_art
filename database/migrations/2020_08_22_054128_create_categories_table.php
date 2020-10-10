@@ -23,7 +23,7 @@ class CreateCategoriesTable extends Migration
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
-            $table->string('title');
+            $table->string('title')->nullable();
             $table->text('desc')->nullable();
             $table->text('image')->nullable();
 
