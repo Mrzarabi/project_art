@@ -9,6 +9,7 @@ use App\Http\Resources\V1\Category\CategoryCollection;
 use App\Models\Category;
 use Carbon\Carbon;
 use Facade\FlareClient\Http\Response;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Http\Request;
 use Symfony\Component\Console\Input\Input;
 
@@ -22,6 +23,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::where('category_id', null)->get();
+        
         if (request()->wantsJson()) {
             return new CategoryCollection($categories);
         } else {
@@ -47,22 +49,22 @@ class CategoryController extends Controller
      */
     public function store(CategoryRequest $request)
     {
-        $category = new Category;
+        if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
+
+            $category = new Category;
             if($request->hasFile('image')) {
-
-                $category->create( array_merge( $request->all(), [
-                    'image' => $this->upload_image($request->file('image'))
-                ]  
-                ));
+    
+                $imageUrl = $this->upload_image($request->file('image'));
+                $category->create( array_merge( $request->all(), [ 'image' => $imageUrl ] ));
             } else {
-
+    
                 $category->create( array_merge( $request->all() ));
             }
-
             return Response([
-                'data' => 'دسته بندی با موققیت ثبت شد',
+                'data' => 'Your category was submitted successfully',
                 'status' => 'success'
             ]);
+        }
     }
 
     /**
@@ -101,20 +103,25 @@ class CategoryController extends Controller
      */
     public function update(CategoryRequest $request, Category $category)
     {
-        if($request->hasFile('image')) {
-            $image = $this->upload_image($request->file('image'));
-        } else {
-            $image = $category->image;
-        }
-        $category->update(array_merge($request->all(), [
-                'image' => $image
-            ] 
-        ));
+        if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
 
-        return Response([
-            'data' => 'دسته بندی با موفقیت به روز رسانی شد',
-            'status' => 'success' 
-        ]);
+            if($request->hasFile('image')) {
+
+                $image = $this->upload_image($request->file('image'));
+            } else {
+                
+                $image = $category->image;
+            }
+            $category->update(array_merge($request->all(), [
+                    'image' => $image
+                ] 
+            ));
+
+            return Response([
+                'data' => 'Your category was updated successfully',
+                'status' => 'success' 
+            ]); 
+        }
     }
 
     /**
@@ -125,11 +132,13 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        $category->delete();
+        if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
+            $category->delete();
 
-        return Response([
-            'data' => 'دسته بندی با موفقیت حذف شد',
-            'status' => 'success'
-        ]);
+            return Response([
+                'data' => 'Your category was deleted successfully',
+                'status' => 'success'
+            ]);
+        }
     }
 }
