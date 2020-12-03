@@ -32,7 +32,11 @@ Route::middleware(['auth:api', 'role:100e82ba-e1c0-4153-8633-e1bd228f7399'])
     Route::get('user/{user}', 'UserController@show');
     Route::put('user/{user}', 'UserController@update');
 
+    Route::resource('logo', 'LogoController');
+
     Route::resource('category', 'CategoryController');
+    
+    Route::resource('banner', 'BannerController');
 
     Route::resource('post', 'PostController');
     Route::post('post/upload/{post}', 'PostController@upload');
