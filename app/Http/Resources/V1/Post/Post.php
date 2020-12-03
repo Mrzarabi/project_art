@@ -21,7 +21,6 @@ class Post extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'desc' => $this->desc,
             'body' => $this->body,
             'time' => $this->created_at->format('d M Y'),
             'images'   => new ImageCollection( Image::where('post_id', $this->id)->get() ),

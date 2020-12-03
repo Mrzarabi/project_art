@@ -26,6 +26,7 @@ class User extends JsonResource
             'desc'   => $this->desc,
             'email' => $this->email,
             'api_token' => $this->api_token,
+            'time' => $this->created_at->format('d M Y'),
         ];
     }
 }

@@ -18,12 +18,12 @@ class Event extends JsonResource
             'id' => $this->id,
             'image' => $this->image,
             'title' => $this->title,
-            'desc' => $this->desc,
             'body' => $this->body,
             'i_link' => $this->i_link,
             'f_link' => $this->f_link,
-            'date' => $this->date ? $this->date->format('d M Y') : null,
+            'date' => $this->date,
             'address' => $this->address,
+            'time' => $this->created_at->format('d M Y'),
         ];
     }
 }

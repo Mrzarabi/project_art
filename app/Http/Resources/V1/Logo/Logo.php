@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Resources\V1\Image;
+namespace App\Http\Resources\V1\Logo;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class Image extends JsonResource
+class Logo extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,9 +15,9 @@ class Image extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'image' => $this->image,
-            'time' => $this->created_at->format('d M Y - H:m'),
+            'logo' => $this->logo,
+            'writer' => $this->title,
+            'sentence' => $this->desc
         ];
     }
 }

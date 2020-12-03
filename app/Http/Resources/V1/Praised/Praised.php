@@ -18,12 +18,15 @@ class Praised extends JsonResource
     {
         return [
             'id' => $this->id,
+            'writer' => $this->writer,
             'title' => $this->title,
             'desc' => $this->desc,
             'body' => $this->body,
             's_link' => $this->s_link,
-            'date' => $this->date ? $this->date->format('d M Y') : null,
-            'images'   => new ImageCollection( Image::where('exhibition_id', $this->id)->get() ),
+            'date' => $this->date,
+            'Written_time' => $this->time,
+            'images'   => new ImageCollection( Image::where('praised_id', $this->id)->get() ),
+            'time' => $this->created_at->format('d M Y'),
         ];
     }
 }

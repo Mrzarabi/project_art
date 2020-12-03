@@ -16,7 +16,8 @@ class Video extends JsonResource
     {
         return [
             'id' => $this->id,
-            'videoUrl' => $this->videoUrl
+            'videoUrl' => $this->videoUrl,
+            'time' => $this->created_at->format('d M Y - H:m'),
         ];
     }
 }

@@ -21,15 +21,15 @@ class Exhibition extends JsonResource
         return [
             'id' => $this->id,
             'title' => $this->title,
-            'desc' => $this->desc,
             'body' => $this->body,
             'i_link' => $this->i_link,
             'f_link' => $this->f_link,
             's_link' => $this->s_link,
-            'date' => $this->date ? $this->date->format('d M Y') : null,
+            'date' => $this->date,
             'address' => $this->address,
             'images'   => new ImageCollection( Image::where('exhibition_id', $this->id)->get() ),
             'videos' => new VideoCollection( Video::where('exhibition_id', $this->id)->get() ),
+            'time' => $this->created_at->format('d M Y'),
         ];
     }
 }
