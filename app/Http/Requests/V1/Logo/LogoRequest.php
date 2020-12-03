@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\V1\Post;
+namespace App\Http\Requests\V1\Logo;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PostRequest extends FormRequest
+class LogoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,10 @@ class PostRequest extends FormRequest
     {
         return [
             'title'         => 'nullable|string|max:50',
-            'body'          => 'nullable|string',
-
-            /*Relation */
-            'categories.*'     => 'nullable|integer|exists:categories,id',
+            'desc'          => 'nullable|string|max:255',
+            'logo'          => [
+                'nullable', 'image', 'mimes:jpeg,jpg,png,gif'
+            ],
         ];
     }
 }

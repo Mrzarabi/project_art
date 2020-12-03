@@ -29,7 +29,6 @@ class EventRequest extends FormRequest
                 'nullable', 'image', 'mimes:jpeg,jpg,png,gif',
             ],
             'title' => 'nullable|string',
-            'desc' => 'nullable|string',
             'body' => 'nullable|string',
             'i_link' => 'nullable|string',
             'f_link' => 'nullable|string',

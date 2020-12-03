@@ -34,7 +34,6 @@ class UserRequest extends FormRequest
             
             'phone_number' => ['nullable', 
                 Rule::unique('users')->ignore(request()->route()->parameters['user']), 
-                'regex:/^09[0-9]{9}$/'
             ],
 
             'i_acc' => 'nullable|string',

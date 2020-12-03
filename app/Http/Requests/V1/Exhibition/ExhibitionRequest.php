@@ -25,7 +25,6 @@ class ExhibitionRequest extends FormRequest
     {
         return [
             'title' => 'nullable|string',
-            'desc' => 'nullable|string',
             'body' => 'nullable|string',
             'i_link' => 'nullable|string',
             'f_link' => 'nullable|string',
