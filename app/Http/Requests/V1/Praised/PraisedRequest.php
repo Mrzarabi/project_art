@@ -24,11 +24,13 @@ class PraisedRequest extends FormRequest
     public function rules()
     {
         return [
+            'writer' => 'nullable|string',
             'title' => 'nullable|string',
             'desc' => 'nullable|string',
             'body' => 'nullable|string',
             's_link' => 'nullable|string',
             'date' => 'nullable|string',
+            'time' => 'nullable|string',
         ];
     }
 }
