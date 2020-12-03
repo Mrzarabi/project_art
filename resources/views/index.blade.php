@@ -1,4 +1,3 @@
-
 @extends('Layouts.master')
 @section('main')
     <div id="ts-hero" class="ts-animate-hero-items">
@@ -9,6 +8,9 @@
     <!--end #hero-->
 
     <main id="ts-content">
+        @if (!$events->isEmpty())
+            @include('Layouts.Event.event')
+        @endif
 
         <!--MY SERVICES ***********************************************************************************-->
         {{-- <section id="my-services" class="ts-block ts-xs-text-center pb-0">
