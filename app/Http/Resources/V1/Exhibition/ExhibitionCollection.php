@@ -23,13 +23,15 @@ class ExhibitionCollection extends ResourceCollection
                 return [
                     'id' => $item->id,
                     'title' => $item->title,
-                    'desc' => $item->desc,
+                    'body' => $item->body,
                     'i_link' => $item->i_link,
                     'f_link' => $item->f_link,
                     's_link' => $item->s_link,
-                    'date' => $item->date ? $item->date->format('d M Y') : null,
+                    'date' => $item->date,
+                    'address' => $item->address,
                     'images'   => new ImageCollection(Image::where('exhibition_id', $item->id)->get()),
                     'videos' => new VideoCollection(Video::where('exhibition_id', $item->id)->get()),
+                    'time' => $item->created_at->format('d M Y'),
                 ];
             })
         ];

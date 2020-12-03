@@ -18,7 +18,8 @@ class VideoCollection extends ResourceCollection
             'data' => $this->collection->map( function($item) {
                 return [
                     'id' => $item->id,
-                    'videoUrl' => $item->videoUrl
+                    'videoUrl' => $item->videoUrl,
+                    'time' => $item->created_at->format('d M Y - H:m'),
                 ];
             })
         ];

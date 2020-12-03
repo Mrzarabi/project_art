@@ -18,11 +18,14 @@ class EventCollection extends ResourceCollection
             'data' => $this->collection->map( function($item) {
                 return [
                     'id' => $item->id,
-                    'image' => $item->title,
+                    'image' => $item->image,
                     'title' => $item->title,
-                    'desc' => $item->desc,
                     'i_link' => $item->i_link,
                     'f_link' => $item->f_link,
+                    'body' => $item->body,
+                    'date' => $item->date,
+                    'address' => $item->address,
+                    'time' => $item->created_at->format('d M Y'),
                 ];
             })
         ];

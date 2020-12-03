@@ -20,11 +20,14 @@ class PraisedCollection extends ResourceCollection
             'data' => $this->collection->map( function($item) {
                 return [
                     'id' => $item->id,
+                    'writer' => $item->writer,
                     'title' => $item->title,
                     'desc' => $item->desc,
                     's_link' => $item->s_link,
-                    'date' => $item->date ? $item->date->format('d M Y') : null,
-                    'images'   => new ImageCollection(Image::where('exhibition_id', $item->id)->get()),
+                    'date' => $item->date,
+                    'Written_time' => $item->time,
+                    'images'   => new ImageCollection(Image::where('praised_id', $item->id)->get()),
+                    'time' => $item->created_at->format('d M Y'),
                 ];
             })
         ];

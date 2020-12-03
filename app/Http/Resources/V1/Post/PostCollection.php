@@ -24,7 +24,6 @@ class PostCollection extends ResourceCollection
                     'id' => $item->id,
                     'category' => $item->category_id ? $item->category->title : '',
                     'title' => $item->title,
-                    'desc' => $item->desc,
                     'body' => $item->body,
                     'time' => $item->created_at->format('d M Y'),
                     'images'   => new ImageCollection(Image::where('post_id', $item->id)->get()),
