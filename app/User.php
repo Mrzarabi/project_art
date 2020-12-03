@@ -58,35 +58,35 @@ class User extends Authenticatable
      *
      * @return void
      */
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            if ( ! $model->getKey()) {
-                $model->{$model->getKeyName()} = (string) Str::uuid();
-            }
-        });
-    }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //     static::creating(function ($model) {
+    //         if ( ! $model->getKey()) {
+    //             $model->{$model->getKeyName()} = (string) Str::uuid();
+    //         }
+    //     });
+    // }
 
     /**
      * Get the value indicating whether the IDs are incrementing.
      *
      * @return bool
      */
-    public function getIncrementing()
-    {
-        return false;
-    }
+    // public function getIncrementing()
+    // {
+    //     return false;
+    // }
 
     /**
      * Get the auto-incrementing key type.
      *
      * @return string
      */
-    public function getKeyType()
-    {
-        return 'string';
-    }
+    // public function getKeyType()
+    // {
+    //     return 'string';
+    // }
 
     /**
      * Relations
