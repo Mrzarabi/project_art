@@ -15,6 +15,7 @@ class Logo extends JsonResource
     public function toArray($request)
     {
         return [
+            'id' => $this->id,
             'logo' => $this->logo,
             'writer' => $this->title,
             'sentence' => $this->desc

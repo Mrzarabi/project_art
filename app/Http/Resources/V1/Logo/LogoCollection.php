@@ -17,6 +17,7 @@ class LogoCollection extends ResourceCollection
         return [
             'data' => $this->collection->map(function($item) {
                 return [
+                    'id' => $item->id,
                     'logo' => $item->logo,
                     'writer' => $item->title,
                     'sentence' => $item->desc
