@@ -22,7 +22,7 @@
             </figure> --}}
 
             <!--TITLE -->
-            <h1 class="ts-bubble-border">
+            <h1 class="ts-bubble-border" style="color: #db4632">
                 <span class="ts-title-rotate">
                     @foreach ($banners as $banner)
                         <span> {{$banner->title}} </span>

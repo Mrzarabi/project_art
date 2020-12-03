@@ -2162,7 +2162,7 @@ E. Template Specific Elements
 }
 
 .ts-bubble-border i {
-    background-color: #fff;
+    background-color: #db4632 !important;
     position: absolute;
     transition: .2s ease-in;
 }
@@ -2208,7 +2208,7 @@ E. Template Specific Elements
 .ts-bubble-border i:nth-child(5):after {
     border-style: solid;
     border-width: .625rem .625rem 0 0;
-    border-color: #fff transparent transparent transparent;
+    border-color: #db4632 transparent transparent transparent;
     content: "";
     position: absolute;
 }
