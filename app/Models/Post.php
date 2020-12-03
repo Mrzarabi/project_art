@@ -4,9 +4,31 @@ namespace App\Models;
 
 use App\User;
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\Sluggable;
 
 class Post extends Model
 {
+    // use Sluggable;
+
+    /**
+     * Return the sluggable configuration array for this model.
+     *
+     * @return array
+     */
+    // public function sluggable()
+    // {
+    //     return [
+    //         'slug' => [
+    //             'source' => 'title'
+    //         ]
+    //     ];
+    // }
+
+    // public function getRouteKeyName()
+    // {
+    //     return 'slug';
+    // }
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -15,7 +37,7 @@ class Post extends Model
     protected $fillable = [
         'category_id',
         'title',
-        'desc',
+        'slug',
         'body',
     ];
 

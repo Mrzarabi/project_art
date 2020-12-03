@@ -1,12 +1,10 @@
 <?php
 
-namespace App\models;
+namespace App\Models;
 
-use App\Models\Image;
-use App\User;
 use Illuminate\Database\Eloquent\Model;
 
-class Event extends Model
+class Logo extends Model
 {
     /**
      * The attributes that are mass assignable.
@@ -14,13 +12,9 @@ class Event extends Model
      * @var array
      */
     protected $fillable = [
-        'image',
         'title',
-        'body',
-        'i_link',
-        'f_link',
-        'date',
-        'address',
+        'desc',
+        'logo'
     ];
 
     /**
@@ -31,15 +25,4 @@ class Event extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-
-    /**
-     * Relations
-     */
-
-    /**
-     * Each event can belongs to one user
-     */
-    public function user() {
-        return $this->belongsTo(User::class);
-    }
 }
