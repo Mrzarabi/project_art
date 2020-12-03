@@ -64,6 +64,11 @@ class UserController extends Controller
 
             if($request->hasFile('avatar')) {
                 
+                if(! empty($user->avatar) ) {
+
+                    $path = $this->unlink_image_from_path( $user->avatar );
+                    unlink($path); 
+                }
                 $avatar = $this->upload_image( $request->file('avatar') );
             } else {
 

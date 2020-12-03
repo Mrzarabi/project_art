@@ -12,8 +12,10 @@ use App\Http\Resources\V1\Post\PostCollection;
 use App\Models\Image;
 use App\Models\Post;
 use App\Models\Video;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use File;
 
 class PostController extends Controller
 {
@@ -85,7 +87,7 @@ class PostController extends Controller
                     'status' => 'success'
                 ]);
 
-            } else {
+            } elseif( $request->videoUrl ) {
 
                 $videos = explode(" ", $request->videoUrl);
                 foreach ($videos as $video) {
@@ -93,6 +95,13 @@ class PostController extends Controller
                 }
                 return response([
                     'data' => 'Your videos were uploaded successfully',
+                    'status' => 'success'
+                ]);
+
+            } else {
+
+                return response([
+                    'data' => 'You have not uploaded anything :(',
                     'status' => 'success'
                 ]);
             }
@@ -112,7 +121,7 @@ class PostController extends Controller
             return new PostResource($post);
         } else {
 
-            return view('test', compact($post));
+            return view('Layouts.Post.show', compact('post'));
         }
     }
 
@@ -141,10 +150,10 @@ class PostController extends Controller
             $post->update($request->all());
             
             return Response([
-                'images' => $post->images()->get(),
-                'videos' => $post->videos()->get(),
+                'images' => Image::where('post_id', $post->id)->get(),
+                'videos' => Video::where('post_id', $post->id)->get(),
                 'message' => 'Your post was updated successfully',
-                'status' => 'success' 
+                'status' => 'success'
             ]);
         }
     }
@@ -161,6 +170,8 @@ class PostController extends Controller
                 
                 $ids = explode(',', $request->deleteFileImage);
                 foreach ($ids as $id) {
+                    $path = $this->unlink_image( $id );
+                    unlink($path); 
                     Image::where('id', $id)->delete();
                 }
             } 
@@ -189,7 +200,7 @@ class PostController extends Controller
                     'status' => 'success'
                 ]);
 
-            } elseif($request->videoUrl) {
+            } elseif ($request->videoUrl) {
 
                 $videos = explode(" ", $request->videoUrl);
                 foreach ($videos as $video) {
@@ -201,10 +212,11 @@ class PostController extends Controller
                     'status' => 'success'
                 ]);
             } else {
+                
                 return response([
-                    'data' => 'Your requests were updated successfully',
+                    'data' => 'Your request was updated successfully',
                     'status' => 'success'
-                ]); 
+                ]);
             }
         }
     }
@@ -219,6 +231,11 @@ class PostController extends Controller
     {
         if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
 
+            $images = Image::where('post_id', $post->id )->get();
+            foreach ($images as $image) {
+                $path = $this->unlink_image_from_path( $image->image );
+                unlink($path); 
+            }
             $post->delete();
 
             return response([
@@ -239,6 +256,11 @@ class PostController extends Controller
 
             $ids = explode(',', $request->ids);
             foreach ($ids as $id) {
+                $images = Image::where('post_id', $id )->get();
+                foreach ($images as $image) {
+                    $path = $this->unlink_image_from_path( $image->image );
+                    unlink($path); 
+                }
                 DB::table('posts')->where('id', $id)->delete();
             }
 

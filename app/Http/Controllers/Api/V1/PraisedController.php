@@ -27,8 +27,8 @@ class PraisedController extends Controller
 
             return new PraisedCollection($praiseds);
         } else {
-
-            return view('test', compact($praiseds));
+            $praiseds = Praised::latest()->simplePaginate(1);
+            return view('Layouts.Praised.praised', compact('praiseds'));
         }
     }
 
@@ -84,7 +84,13 @@ class PraisedController extends Controller
                 'data' => 'Your images were uploaded successfully',
                 'status' => 'success'
                 ]);
-            } 
+            } else {
+
+                return response([
+                    'data' => 'You have not uploaded anything :(',
+                    'status' => 'success'
+                ]);
+            }
         }
     }
 
@@ -101,7 +107,7 @@ class PraisedController extends Controller
             return new PraisedResource($praised);
         } else {
 
-            return view('test', compact($praised));
+            return view('Layouts.Praised.show', compact('praised'));
         }
     }
 
@@ -130,7 +136,6 @@ class PraisedController extends Controller
             $praised->update($request->all());
 
             return Response([
-                'images' => $praised->images()->get(),
                 'message' => 'Your praised post was updated successfully',
                 'status' => 'success' 
             ]);
@@ -142,18 +147,20 @@ class PraisedController extends Controller
     {
         if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
 
+            /**
+             * find id image should delete 
+             */
+            if( $request->deleteFileImage ) {
+                
+                $ids = explode(',', $request->deleteFileImage);
+                foreach ($ids as $id) {
+                    $path = $this->unlink_image( $id );
+                    unlink($path); 
+                    Image::where('id', $id)->delete();
+                }
+            } 
+
             if( $request->hasFile('image')) {
-
-                /**
-                 * find id image should delete 
-                 */
-                if( $request->deleteFileImage ) {
-
-                    $ids = explode(',', $request->deleteFileImage);
-                    foreach ($ids as $id) {
-                        Image::where('id', $id)->delete();
-                    }
-                } 
 
                 $images = $request->file('image');
 
@@ -161,12 +168,17 @@ class PraisedController extends Controller
                     $file = $this->upload_image($image);
                     $praised->images()->create(['image' => $file]);
                 }
-                
+
                 return response([
                     'data' => 'Your images were updated successfully',
                     'status' => 'success'
                 ]);
             }
+            
+            return response([
+                'data' => 'Your images were updated successfully',
+                'status' => 'success'
+            ]);
         }
     }
 
@@ -180,6 +192,11 @@ class PraisedController extends Controller
     {
         if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
 
+            $images = Image::where('praised_id', $praised->id )->get();
+            foreach ($images as $image) {
+                $path = $this->unlink_image_from_path( $image->image );
+                unlink($path); 
+            }
             $praised->delete();
 
             return response([
@@ -200,11 +217,16 @@ class PraisedController extends Controller
 
             $ids = explode(',', $request->ids);
             foreach ($ids as $id) {
+                $images = Image::where('praised_id', $id )->get();
+                foreach ($images as $image) {
+                    $path = $this->unlink_image_from_path( $image->image );
+                    unlink($path); 
+                }
                 DB::table('praiseds')->where('id', $id)->delete();
             }
 
             return response([
-                'data' => 'Your praised posts were deleted successfully',
+                'data' => 'Your praised were deleted successfully',
                 'status' => 'success'
             ]);
         }

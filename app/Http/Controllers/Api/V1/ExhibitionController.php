@@ -28,8 +28,8 @@ class ExhibitionController extends Controller
 
             return new ExhibitionCollection($exhibitions);
         } else {
-
-            return view('test', compact($exhibitions));
+            $exhibitions = Exhibition::latest()->simplePaginate(1);
+            return view('Layouts.Exhibition.exhibition', compact('exhibitions'));
         }
     }
 
@@ -85,7 +85,7 @@ class ExhibitionController extends Controller
                 'status' => 'success'
                 ]);
 
-            } else {
+            } elseif( $request->videoUrl ) {
 
                 $videos = explode(" ", $request->videoUrl);
                 foreach ($videos as $video) {
@@ -93,6 +93,12 @@ class ExhibitionController extends Controller
                 }
                 return response([
                     'data' => 'Your videos were uploaded successfully',
+                    'status' => 'success'
+                ]);
+            } else {
+
+                return response([
+                    'data' => 'You have not uploaded anything :(',
                     'status' => 'success'
                 ]);
             }
@@ -110,9 +116,6 @@ class ExhibitionController extends Controller
         if(request()->wantsJson()) {
 
             return new ExhibitionResource($exhibition);
-        } else {
-
-            return view('test', compact($exhibition));
         }
     }
 
@@ -141,8 +144,6 @@ class ExhibitionController extends Controller
             $exhibition->update($request->all());
 
             return Response([
-                'images' => $exhibition->images()->get(),
-                'videos' => $exhibition->videos()->get(),
                 'message' => 'Your exhibition post was updated successfully',
                 'status' => 'success' 
             ]);
@@ -158,9 +159,11 @@ class ExhibitionController extends Controller
              * find id image should delete 
              */
             if( $request->deleteFileImage ) {
-
+                
                 $ids = explode(',', $request->deleteFileImage);
                 foreach ($ids as $id) {
+                    $path = $this->unlink_image( $id );
+                    unlink($path); 
                     Image::where('id', $id)->delete();
                 }
             } 
@@ -188,7 +191,7 @@ class ExhibitionController extends Controller
                     'data' => 'Your images were updated successfully',
                     'status' => 'success'
                 ]);
-            } elseif($request->videoUrl) {
+            } elseif ($request->videoUrl) {
 
                 $videos = explode(" ", $request->videoUrl);
                 foreach ($videos as $video) {
@@ -219,6 +222,12 @@ class ExhibitionController extends Controller
     {
         if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
 
+            $images = Image::where('exhibition_id', $exhibition->id )->get();
+            foreach ($images as $image) {
+                $path = $this->unlink_image_from_path( $image->image );
+                unlink($path); 
+            }
+
             $exhibition->delete();
 
             return response([
@@ -239,11 +248,16 @@ class ExhibitionController extends Controller
 
             $ids = explode(',', $request->ids);
             foreach ($ids as $id) {
+                $images = Image::where('exhibition_id', $id )->get();
+                foreach ($images as $image) {
+                    $path = $this->unlink_image_from_path( $image->image );
+                    unlink($path); 
+                }
                 DB::table('exhibitions')->where('id', $id)->delete();
             }
 
             return response([
-                'data' => 'Your exhibition posts were deleted successfully',
+                'data' => 'Your exhibition were deleted successfully',
                 'status' => 'success'
             ]);
         }

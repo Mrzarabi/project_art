@@ -7,6 +7,7 @@ use App\Http\Requests\V1\Category\CategoryRequest;
 use App\Http\Resources\V1\Category\Category as CategoryResource;
 use App\Http\Resources\V1\Category\CategoryCollection;
 use App\Models\Category;
+use App\Models\Post;
 use Carbon\Carbon;
 use Facade\FlareClient\Http\Response;
 use Illuminate\Filesystem\Filesystem;
@@ -27,7 +28,7 @@ class CategoryController extends Controller
         if (request()->wantsJson()) {
             return new CategoryCollection($categories);
         } else {
-            return view('category', compact('categories'));
+            return view('Layouts.Category.category', compact('categories'));
         }
     }
 
@@ -79,7 +80,8 @@ class CategoryController extends Controller
             
             return new CategoryResource($category);
         } else {
-            return view('test', compact('category'));
+            $posts = Post::where('category_id', $category->id)->get();
+            return view('Layouts.Category.show', compact('posts'));
         }
     }
 
@@ -106,7 +108,12 @@ class CategoryController extends Controller
         if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
 
             if($request->hasFile('image')) {
+                
+                if(! empty($category->image) ) {
 
+                    $path = $this->unlink_image_from_path( $category->image );
+                    unlink($path); 
+                }
                 $image = $this->upload_image($request->file('image'));
             } else {
                 
@@ -133,6 +140,12 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
+            
+            if(! empty($category->image) ) {
+
+                $path = $this->unlink_image_from_path( $category->image );
+                unlink($path); 
+            }
             $category->delete();
 
             return Response([

@@ -8,6 +8,7 @@ use App\Http\Requests\V1\multiDelete\multiDeleteRequest;
 use App\Http\Resources\V1\Event\EventCollection;
 use App\Http\Resources\V1\Event\Event as EventResource;
 use App\models\Event;
+use App\Models\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -21,13 +22,7 @@ class EventController extends Controller
     public function index()
     {
         $events = Event::latest()->paginate(10);
-        if(request()->wantsJson()) {
-
-            return new EventCollection($events);
-        } else {
-            
-            return view('test', compact($events));
-        }
+        return new EventCollection($events);
     }
 
     /**
@@ -75,13 +70,7 @@ class EventController extends Controller
      */
     public function show(Event $event)
     {
-        if(request()->wantsJson()) {
-
-            return new EventResource($event);
-        } else {
-            
-            return view('test', compact($event));
-        }
+        return new EventResource($event);
     }
 
     /**
@@ -107,7 +96,11 @@ class EventController extends Controller
         if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
 
             if($request->hasFile('image') ) {
-
+                if( $event->image ) {
+                    
+                    $path = $this->unlink_image_from_path( $event->image );
+                    unlink($path); 
+                }
                 $image = $this->upload_image( $request->file('image') );
             } else {
 
@@ -116,7 +109,7 @@ class EventController extends Controller
 
             //TODO ثبت ایونت هایی که تصویر ندارن و براشون تصویر هم اپدیت نمیشه
             $event->update(
-                 array_merge($request->all(), ['image' => $image]));
+                array_merge($request->all(), ['image' => $image]));
 
             return Response([
                 'message' => 'Your event was updated successfully',
@@ -135,6 +128,11 @@ class EventController extends Controller
     {
         if( auth()->user()->hasRole('100e82ba-e1c0-4153-8633-e1bd228f7399') ) {
 
+            if(! empty($event->image) ) {
+
+                $path = $this->unlink_image_from_path( $event->image );
+                unlink($path); 
+            }
             $event->delete();
 
             return response([
@@ -156,6 +154,12 @@ class EventController extends Controller
 
             $ids = explode(',', $request->ids);
             foreach ($ids as $id) {
+                $event = Event::find($id);
+                if(! empty($event->image) ) {
+
+                    $path = $this->unlink_image_from_path( $event->image );
+                    unlink($path); 
+                }
                 DB::table('events')->where('id', $id)->delete();
             }
 
