@@ -16,7 +16,7 @@ class CreateEventsTable extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
 
-            $table->string('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
@@ -25,7 +25,6 @@ class CreateEventsTable extends Migration
 
             $table->string('image')->nullable();
             $table->string('title')->nullable();
-            $table->string('desc')->nullable();
             $table->text('body')->nullable();
             $table->string('i_link')->nullable();
             $table->string('f_link')->nullable();

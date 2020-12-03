@@ -16,7 +16,7 @@ class CreateExhibitionsTable extends Migration
         Schema::create('exhibitions', function (Blueprint $table) {
             $table->id();
 
-            $table->string('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
@@ -24,7 +24,7 @@ class CreateExhibitionsTable extends Migration
                 ->onUpdate('cascade');
 
             $table->string('title')->nullable();
-            $table->string('desc')->nullable();
+            $table->string('slug')->nullable();
             $table->text('body')->nullable();
             $table->string('i_link')->nullable();
             $table->string('f_link')->nullable();

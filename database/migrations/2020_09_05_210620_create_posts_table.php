@@ -16,7 +16,7 @@ class CreatePostsTable extends Migration
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
 
-            $table->string('user_id')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
@@ -31,7 +31,7 @@ class CreatePostsTable extends Migration
                 ->onUpdate('cascade');
             
             $table->string('title')->nullable();
-            $table->string('desc')->nullable();
+            $table->string('slug')->nullable();
             $table->text('body')->nullable();
 
             $table->timestamps();

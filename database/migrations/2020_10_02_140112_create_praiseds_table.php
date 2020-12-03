@@ -16,18 +16,21 @@ class CreatePraisedsTable extends Migration
         Schema::create('praiseds', function (Blueprint $table) {
             $table->id();
 
-            $table->string('user_id');
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
                 ->references('id')
                 ->on('users')
                 ->onDelete('cascade')
                 ->onUpdate('cascade');
 
+            $table->string('writer')->nullable();
             $table->string('title')->nullable();
+            $table->string('slug')->nullable();
             $table->string('desc')->nullable();
             $table->text('body')->nullable();
             $table->string('s_link')->nullable();
             $table->string('date')->nullable();
+            $table->string('time')->nullable();
 
             $table->timestamps();
         });

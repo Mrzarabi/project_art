@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriesTable extends Migration
+class CreateLogosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,20 +13,12 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
+        Schema::create('logos', function (Blueprint $table) {
             $table->id();
-
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->foreign('category_id')
-                ->references('id')
-                ->on('categories')
-                ->onDelete('cascade')
-                ->onUpdate('cascade');
-
+            
             $table->string('title')->nullable();
-            $table->string('slug')->nullable();
             $table->text('desc')->nullable();
-            $table->text('image')->nullable();
+            $table->text('logo')->nullable();
 
             $table->timestamps();
         });
@@ -39,6 +31,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('logos');
     }
 }
