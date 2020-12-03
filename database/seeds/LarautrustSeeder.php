@@ -17,7 +17,7 @@ class LaratrustSeeder extends Seeder
      */
     public function run()
     {
-        $usernames = collect(['helper@gmail.com', 'owner@gmail.com']);
+        $usernames = collect(['helper@gmail.com', 'rastasafari.art@gmaill.com']);
 
         $this->truncateLaratrustTables();
 
@@ -60,7 +60,7 @@ class LaratrustSeeder extends Seeder
                 $user = User::firstOrCreate([
                     'email' => $item
                 ], [
-                    'password' => bcrypt(123456),
+                    'password' => bcrypt('SFRM550'),
                     'api_token' => Str::random(100)
                 ]);
 
