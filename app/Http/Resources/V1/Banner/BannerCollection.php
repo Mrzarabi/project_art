@@ -17,6 +17,7 @@ class BannerCollection extends ResourceCollection
         return [
             'data' => $this->collection->map(function($item) {
                 return [
+                    'id' => $item->id,
                     'title' => $item->title,
                     'image' => $item->image
                 ];
